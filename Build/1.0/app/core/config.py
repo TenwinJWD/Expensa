@@ -5,7 +5,7 @@ Roadmap/PRD.md and Roadmap/Architecture.md.
 """
 
 APP_NAME = "Expensa"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 APP_AUTHOR = "Tenwin James"  # PRD FR-36: the only place this name is set.
 
 # Login (PRD FR-2, FR-4, NFR-5).

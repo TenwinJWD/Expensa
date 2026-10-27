@@ -4,7 +4,7 @@ A Windows desktop app for recording daily collection and expense entries under t
 
 Developed by **Tenwin James**.
 
-> Status: version 1.0.0 is built. Source and installers are in `Build/1.0`. Licensed under the [Apache License 2.0](LICENSE).
+> Status: version 1.0.1 is built. Source and installers are in `Build/1.0`. Licensed under the [Apache License 2.0](LICENSE).
 >
 > **Download:** the installers are attached to each [GitHub Release](../../releases), with their SHA-256 hashes.
 
@@ -68,8 +68,8 @@ The packaged program is built from this environment, so the build includes the l
 ## Packaging and uninstall
 
 - `ExpenseLedger.exe` is built with PyInstaller.
-- `ExpenseLedger-Setup-1.0.0.exe` is a single setup program. It shows the license, then installs for the current user (no administrator rights) with a desktop shortcut and a Start Menu entry. It installs the `ExpenseLedger-1.0.0-CurrentUser.msi` inside it.
-- `ExpenseLedger-1.0.0.msi` is the installer, built with WiX Toolset v4. The install dialog asks **Just me** (the default: installs for the current user, no administrator rights) or **Anyone who uses this computer** (installs for all users, needs administrator rights). A desktop shortcut and a Start Menu entry are added for the chosen user.
+- `ExpenseLedger-Setup-1.0.1.exe` is a single setup program. It shows the license, then installs for the current user (no administrator rights) with a desktop shortcut and a Start Menu entry. It installs the `ExpenseLedger-1.0.1-CurrentUser.msi` inside it.
+- `ExpenseLedger-1.0.1.msi` is the installer, built with WiX Toolset v4. The install dialog asks **Just me** (the default: installs for the current user, no administrator rights) or **Anyone who uses this computer** (installs for all users, needs administrator rights). A desktop shortcut and a Start Menu entry are added for the chosen user.
 - To uninstall, use **Settings > Apps > Installed apps > Expensa**, or run `installer\uninstall.bat`. Both keep your data.
 - **Windows SmartScreen warning:** an unsigned build triggers "Windows protected your PC" and may be quarantined by Windows Defender. Release builds should be digitally signed with `installer\sign.ps1` (see **Release checklist** below). For an unsigned build, click **More info**, then **Run anyway**. Only do this for the installer you received from the developer.
 

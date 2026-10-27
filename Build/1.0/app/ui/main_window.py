@@ -147,7 +147,7 @@ class MainView(ctk.CTkFrame):
     def _build_sidebar(self, sidebar: "SidebarCanvas") -> None:
         """Brand and menu at the top, in one group; Change Password, Logout, and the footer at the bottom."""
         sidebar.add(ctk.CTkLabel(sidebar, text="Expensa", font=widgets.text_font(16), text_color=theme.SIDEBAR_TEXT, anchor="w"), 20, lambda _h: 22, 26)
-        sidebar.add(ctk.CTkLabel(sidebar, text="Version 1.0.0", font=widgets.text_font(theme.FONT_SIZE_LABEL, False), text_color=theme.TEXT_MUTED, anchor="w"), 20, lambda _h: 50, 18)
+        sidebar.add(ctk.CTkLabel(sidebar, text="Version 1.0.1", font=widgets.text_font(theme.FONT_SIZE_LABEL, False), text_color=theme.TEXT_MUTED, anchor="w"), 20, lambda _h: 50, 18)
 
         for index, (key, nav_text, _title, _description) in enumerate(self.PAGES):
             top = 96 + index * 46

@@ -26,7 +26,7 @@ param(
     [string]$AzureDlib,
     [string]$AzureMetadata,
     [string]$TimestampUrl = 'http://timestamp.acs.microsoft.com',
-    [string]$Version = '1.0.0'
+    [string]$Version = '1.0.1'
 )
 
 $ErrorActionPreference = 'Stop'

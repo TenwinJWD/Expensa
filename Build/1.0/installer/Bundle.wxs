@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Expensa setup program (ExpenseLedger-Setup-1.0.0.exe).
-  A single .exe that shows the license, then installs ExpenseLedger-1.0.0.msi.
+  Expensa setup program (ExpenseLedger-Setup-1.0.1.exe).
+  A single .exe that shows the license, then installs ExpenseLedger-1.0.1.msi.
   The .msi is still built on its own and can be installed directly.
   The install-scope choice ("Just me" or "Anyone who uses this computer") is the MSI's own dialog.
 -->
@@ -10,7 +10,7 @@
   <Bundle
     Name="Expensa"
     Manufacturer="Tenwin James"
-    Version="1.0.0.0"
+    Version="1.0.1.0"
     UpgradeCode="7A1C0E2D-5B3F-4D6A-8E9F-1A2B3C4D5E60"
     IconSourceFile="app.ico">
 
@@ -24,7 +24,7 @@
     <Chain>
       <MsiPackage
         Id="ExpenseLedgerMsi"
-        SourceFile="ExpenseLedger-1.0.0-CurrentUser.msi"
+        SourceFile="ExpenseLedger-1.0.1-CurrentUser.msi"
         Compressed="yes"
         Vital="yes" />
     </Chain>

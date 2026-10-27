@@ -2,7 +2,14 @@
 
 All notable changes to Expense Ledger are recorded here (Rules 33). Dates use DD-Mon-YYYY.
 
-## 1.0.0 – not yet released
+## 1.0.1 – 27-Oct-2026
+
+### Changed
+- The product is now named **Expensa** in the app, the installers, the file properties and the README. File names, install folders and the data folders keep the `ExpenseLedger` name, so existing installs, upgrades and data are not affected.
+- Errors the app does not handle are written to the log, and the user sees a short message instead of a crash.
+- The program, installers and setup program are digitally signed.
+
+## 1.0.0 – 25-Oct-2026
 
 Developed by Tenwin James.
 

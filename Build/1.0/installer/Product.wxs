@@ -2,9 +2,9 @@
 <!--
   Expensa installer (PRD deliverable 3, Architecture 9, Tasks T9.4 and T9.5).
   Built in two modes (set with -d Mode=...):
-  - Dual: ExpenseLedger-1.0.0.msi. The first dialog asks "Just me" (default) or "Anyone who uses this computer".
+  - Dual: ExpenseLedger-1.0.1.msi. The first dialog asks "Just me" (default) or "Anyone who uses this computer".
     Just me installs to %LOCALAPPDATA%\Apps\ExpenseLedger; all users installs to Program Files (administrator rights).
-  - User: ExpenseLedger-1.0.0-CurrentUser.msi. Current user only, no dialog. The setup EXE uses this one.
+  - User: ExpenseLedger-1.0.1-CurrentUser.msi. Current user only, no dialog. The setup EXE uses this one.
   The desktop shortcut goes on the chosen user's desktop. Uninstall removes the program only; the user's data is kept in
   Desktop\ExpenseLedger and %APPDATA%\ExpenseLedger, which this file never touches.
 -->
@@ -12,7 +12,7 @@
   <Package
     Name="Expensa"
     Manufacturer="Tenwin James"
-    Version="1.0.0"
+    Version="1.0.1"
     UpgradeCode="6F1E2B7A-4C3D-4E8F-9A10-2B3C4D5E6F70"
     Scope="$(var.PackageScope)"
     Compressed="yes"
