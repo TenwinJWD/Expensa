@@ -1,0 +1,154 @@
+# Builds Expense Ledger and has SignPath sign it. Run by pushing a tag like v1.0.0, or by hand.
+# One-time setup (SignPath project, secret, variables) is in SIGNING.md.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  VERSION: '1.0.0'
+  WIX_VERSION: '4.0.6'
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: Build/1.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install build tools
+        run: |
+          python -m pip install -r requirements-dev.txt
+          dotnet tool install --global wix --version $env:WIX_VERSION
+          wix extension add --global WixToolset.UI.wixext/$env:WIX_VERSION
+          wix extension add --global WixToolset.Bal.wixext/$env:WIX_VERSION
+
+      - name: Tests and dependency audit
+        run: |
+          python -m pytest -q
+          python -m pip_audit -r requirements.txt
+
+      - name: Build the program
+        run: python -m PyInstaller ExpenseLedger.spec --noconfirm
+
+      # --- 1. the program ---
+      - name: Stage the program for signing
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/s1" | Out-Null
+          Copy-Item dist/ExpenseLedger/ExpenseLedger.exe "$env:RUNNER_TEMP/s1/"
+      - name: Upload (program)
+        id: up-exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-exe
+          path: ${{ runner.temp }}/s1/ExpenseLedger.exe
+      - name: Sign (program)
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG }}
+          artifact-configuration-slug: exe
+          github-artifact-id: ${{ steps.up-exe.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: ${{ runner.temp }}/signed-exe
+      - name: Put the signed program back
+        run: Copy-Item "$env:RUNNER_TEMP/signed-exe/ExpenseLedger.exe" dist/ExpenseLedger/ExpenseLedger.exe -Force
+
+      # --- 2. the MSI files ---
+      - name: Build the MSI files
+        working-directory: Build/1.0/installer
+        run: |
+          python generate_files.py
+          wix build Product.wxs Files.wxs -arch x64 -ext WixToolset.UI.wixext -d Mode=Dual -d PackageScope=perMachine -bindpath ../assets -bindpath . -o "$env:RUNNER_TEMP/s2/ExpenseLedger-$env:VERSION.msi"
+          wix build Product.wxs Files.wxs -arch x64 -d Mode=User -d PackageScope=perUser -bindpath ../assets -bindpath . -o "$env:RUNNER_TEMP/s2/ExpenseLedger-$env:VERSION-CurrentUser.msi"
+      - name: Upload (MSI files)
+        id: up-msi
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-msi
+          path: ${{ runner.temp }}/s2/*.msi
+      - name: Sign (MSI files)
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG }}
+          artifact-configuration-slug: msi
+          github-artifact-id: ${{ steps.up-msi.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: ${{ runner.temp }}/signed-msi
+
+      # --- 3. the setup program (Burn): sign its engine, then the whole file ---
+      - name: Build the setup program and detach its engine
+        working-directory: Build/1.0/installer
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/s3" | Out-Null
+          wix build Bundle.wxs -ext WixToolset.Bal.wixext -bindpath . -bindpath "$env:RUNNER_TEMP/signed-msi" -bindpath ../assets -o "$env:RUNNER_TEMP/ExpenseLedger-Setup-$env:VERSION.exe"
+          wix burn detach "$env:RUNNER_TEMP/ExpenseLedger-Setup-$env:VERSION.exe" -engine "$env:RUNNER_TEMP/s3/engine.exe"
+      - name: Upload (engine)
+        id: up-engine
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-engine
+          path: ${{ runner.temp }}/s3/engine.exe
+      - name: Sign (engine)
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG }}
+          artifact-configuration-slug: exe
+          github-artifact-id: ${{ steps.up-engine.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: ${{ runner.temp }}/signed-engine
+      - name: Reattach the signed engine
+        working-directory: Build/1.0/installer
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/s4" | Out-Null
+          wix burn reattach "$env:RUNNER_TEMP/ExpenseLedger-Setup-$env:VERSION.exe" -engine "$env:RUNNER_TEMP/signed-engine/engine.exe" -o "$env:RUNNER_TEMP/s4/ExpenseLedger-Setup-$env:VERSION.exe"
+      - name: Upload (setup)
+        id: up-setup
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-setup
+          path: ${{ runner.temp }}/s4/ExpenseLedger-Setup-${{ env.VERSION }}.exe
+      - name: Sign (setup)
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG }}
+          artifact-configuration-slug: exe
+          github-artifact-id: ${{ steps.up-setup.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: ${{ runner.temp }}/signed-setup
+
+      # --- 4. publish ---
+      - name: Collect the release files and hashes
+        run: |
+          New-Item -ItemType Directory -Force release | Out-Null
+          Copy-Item "$env:RUNNER_TEMP/signed-msi/*.msi", "$env:RUNNER_TEMP/signed-setup/*.exe" release/
+          Get-ChildItem release | Get-FileHash -Algorithm SHA256 |
+            ForEach-Object { '{0}  {1}' -f $_.Hash, (Split-Path -Leaf $_.Path) } | Tee-Object release/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ExpenseLedger-${{ env.VERSION }}-signed
+          path: Build/1.0/release/*
