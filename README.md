@@ -91,7 +91,10 @@ The packaged program is built from this environment, so the build includes the l
 Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
 
 - **Release builds** are produced only by the GitHub Actions workflow `.github/workflows/release.yml` from the source in this repository, then signed by SignPath. Nothing is signed from a personal computer.
-- **Roles:** author, reviewer and approver of every signing request is the maintainer, Tenwin James (`TenwinJWD`).
+- **Team roles** (all held by the maintainer, Tenwin James, GitHub `TenwinJWD`, who uses multi-factor authentication on GitHub and SignPath):
+  - **Author:** commits to this repository.
+  - **Reviewer:** reviews any change submitted by someone else before it is merged.
+  - **Approver:** approves every signing request before a release is signed.
 - **Privacy:** Expense Ledger works offline and sends no data anywhere. Entries, the login and the log stay on the user's computer.
 - **Verify a download:** compare its SHA-256 hash with the one published in the release notes (`Get-FileHash <file>` in PowerShell).
 
