@@ -1,4 +1,4 @@
-# Builds Expense Ledger and has SignPath sign it. Run by pushing a tag like v1.0.0, or by hand.
+# Builds Expensa and has SignPath sign it. Run by pushing a tag like v1.0.0, or by hand.
 # One-time setup (SignPath project, secret, variables) is in SIGNING.md.
 name: Release
 

@@ -1,5 +1,5 @@
 <#
-  Signs the Expense Ledger release files with Authenticode (SHA-256 + timestamp).
+  Signs the Expensa release files with Authenticode (SHA-256 + timestamp).
 
   Order matters: each file must be signed before anything that wraps it is built.
     1. dist\ExpenseLedger\ExpenseLedger.exe   (sign, then rebuild the MSI files from it)
@@ -47,7 +47,7 @@ function Find-SignTool {
 
 function Sign-File([string]$file) {
     if (-not (Test-Path $file)) { throw "Missing file: $file" }
-    $args = @('sign', '/fd', 'SHA256', '/d', 'Expense Ledger', '/td', 'SHA256', '/tr', $TimestampUrl)
+    $args = @('sign', '/fd', 'SHA256', '/d', 'Expensa', '/td', 'SHA256', '/tr', $TimestampUrl)
     if ($AzureDlib) { $args += @('/dlib', $AzureDlib, '/dmdf', $AzureMetadata) }
     elseif ($Thumbprint) { $args += @('/sha1', $Thumbprint) }
     elseif ($PfxPath) { $args += @('/f', $PfxPath, '/p', $PfxPassword) }

@@ -1,4 +1,4 @@
-"""Start the Expense Ledger app.
+"""Start the Expensa app.
 
 Start-up order (Architecture 6.1): prepare the sub-head files, create the account if
 none exists (otherwise log in), then open the main window. Only this file knows where

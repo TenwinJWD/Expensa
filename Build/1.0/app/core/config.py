@@ -4,7 +4,7 @@ Every number used in the app is named here (Rules 6). Values come from
 Roadmap/PRD.md and Roadmap/Architecture.md.
 """
 
-APP_NAME = "Expense Ledger"
+APP_NAME = "Expensa"
 APP_VERSION = "1.0.0"
 APP_AUTHOR = "Tenwin James"  # PRD FR-36: the only place this name is set.
 

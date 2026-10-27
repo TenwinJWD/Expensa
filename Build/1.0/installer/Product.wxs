@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Expense Ledger installer (PRD deliverable 3, Architecture 9, Tasks T9.4 and T9.5).
+  Expensa installer (PRD deliverable 3, Architecture 9, Tasks T9.4 and T9.5).
   Built in two modes (set with -d Mode=...):
   - Dual: ExpenseLedger-1.0.0.msi. The first dialog asks "Just me" (default) or "Anyone who uses this computer".
     Just me installs to %LOCALAPPDATA%\Apps\ExpenseLedger; all users installs to Program Files (administrator rights).
@@ -10,7 +10,7 @@
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package
-    Name="Expense Ledger"
+    Name="Expensa"
     Manufacturer="Tenwin James"
     Version="1.0.0"
     UpgradeCode="6F1E2B7A-4C3D-4E8F-9A10-2B3C4D5E6F70"
@@ -18,7 +18,7 @@
     Compressed="yes"
     InstallerVersion="500">
 
-    <MajorUpgrade DowngradeErrorMessage="A newer version of Expense Ledger is already installed." />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Expensa is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
     <!-- The app icon, from the assets folder (bound with -bindpath assets). Used by Add/Remove Programs and the shortcut. -->
@@ -33,7 +33,7 @@
     <ui:WixUI Id="WixUI_Advanced" />
 <?endif?>
 
-    <Feature Id="Main" Title="Expense Ledger" Level="1">
+    <Feature Id="Main" Title="Expensa" Level="1">
       <ComponentGroupRef Id="ProgramFilesGroup" />
       <ComponentRef Id="ProgramFilesExtras" />
       <ComponentRef Id="StartMenuShortcuts" />
@@ -82,8 +82,8 @@
       <Component Id="DesktopShortcut" Guid="{C5D3E4F6-3333-4C7D-8EAF-2A3B4C5D6E7F}">
         <Shortcut
           Id="DesktopAppShortcut"
-          Name="Expense Ledger"
-          Description="Expense Ledger"
+          Name="Expensa"
+          Description="Expensa"
           Target="[APPLICATIONFOLDER]ExpenseLedger.exe"
           Icon="AppIcon.ico"
           WorkingDirectory="APPLICATIONFOLDER" />
@@ -92,19 +92,19 @@
     </StandardDirectory>
 
     <StandardDirectory Id="ProgramMenuFolder">
-      <Directory Id="AppMenuFolder" Name="Expense Ledger">
+      <Directory Id="AppMenuFolder" Name="Expensa">
         <Component Id="StartMenuShortcuts" Guid="{B4C2D3E5-2222-4B6C-9DAE-1F2A3B4C5D6E}">
           <Shortcut
             Id="AppShortcut"
-            Name="Expense Ledger"
-            Description="Expense Ledger"
+            Name="Expensa"
+            Description="Expensa"
             Target="[APPLICATIONFOLDER]ExpenseLedger.exe"
             Icon="AppIcon.ico"
             WorkingDirectory="APPLICATIONFOLDER" />
           <Shortcut
             Id="UninstallShortcut"
-            Name="Uninstall Expense Ledger"
-            Description="Remove Expense Ledger. Your entries are kept; the login is removed."
+            Name="Uninstall Expensa"
+            Description="Remove Expensa. Your entries are kept; the login is removed."
             Target="[APPLICATIONFOLDER]uninstall.bat"
             WorkingDirectory="APPLICATIONFOLDER" />
           <RemoveFolder Id="RemoveAppMenuFolder" On="uninstall" />

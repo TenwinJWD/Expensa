@@ -1,4 +1,4 @@
-# Expense Ledger
+# Expensa
 
 A Windows desktop app for recording daily collection and expense entries under two main heads, keeping every entry in Excel files by date, and reviewing them in an Expense Report.
 
@@ -70,7 +70,7 @@ The packaged program is built from this environment, so the build includes the l
 - `ExpenseLedger.exe` is built with PyInstaller.
 - `ExpenseLedger-Setup-1.0.0.exe` is a single setup program. It shows the license, then installs for the current user (no administrator rights) with a desktop shortcut and a Start Menu entry. It installs the `ExpenseLedger-1.0.0-CurrentUser.msi` inside it.
 - `ExpenseLedger-1.0.0.msi` is the installer, built with WiX Toolset v4. The install dialog asks **Just me** (the default: installs for the current user, no administrator rights) or **Anyone who uses this computer** (installs for all users, needs administrator rights). A desktop shortcut and a Start Menu entry are added for the chosen user.
-- To uninstall, use **Settings > Apps > Installed apps > Expense Ledger**, or run `installer\uninstall.bat`. Both keep your data.
+- To uninstall, use **Settings > Apps > Installed apps > Expensa**, or run `installer\uninstall.bat`. Both keep your data.
 - **Windows SmartScreen warning:** an unsigned build triggers "Windows protected your PC" and may be quarantined by Windows Defender. Release builds should be digitally signed with `installer\sign.ps1` (see **Release checklist** below). For an unsigned build, click **More info**, then **Run anyway**. Only do this for the installer you received from the developer.
 
 ### Release checklist (avoid Defender and SmartScreen blocks)
@@ -95,7 +95,7 @@ Free code signing provided by [SignPath.io](https://signpath.io), certificate by
   - **Author:** commits to this repository.
   - **Reviewer:** reviews any change submitted by someone else before it is merged.
   - **Approver:** approves every signing request before a release is signed.
-- **Privacy:** Expense Ledger works offline and sends no data anywhere. Entries, the login and the log stay on the user's computer.
+- **Privacy:** Expensa works offline and sends no data anywhere. Entries, the login and the log stay on the user's computer.
 - **Verify a download:** compare its SHA-256 hash with the one published in the release notes (`Get-FileHash <file>` in PowerShell).
 
 ---

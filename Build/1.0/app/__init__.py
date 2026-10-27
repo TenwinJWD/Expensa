@@ -1,1 +1,1 @@
-"""Expense Ledger application package."""
+"""Expensa application package."""
